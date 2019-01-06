@@ -62,9 +62,8 @@ def read8():
             S2_list.append(list)
     fh1.close()
 # ==========================================================================================================
-
 read8()
-# print(S1_list)
+print(S1_list)
 # print(S2_list)
 # 依照已填休假日多到少排序
 S1_list.sort(reverse=True)
@@ -80,30 +79,76 @@ for i in range(day):
         s2_allleft_peroneday += S2_list[m][2][i]
     s1_allleft_peroneday_list.append(s1_allleft_peroneday)
     s2_allleft_peroneday_list.append(s2_allleft_peroneday)
-
+# ==========================================================================================================
 # 先把可以連假的狀況補上（前提是那天都沒有人休假）
 for m in range(4):
     cycle = 0
-    while S1_list[m][0] < 8:
+    while S1_list[m][0] < all_sun_sat:
         for i in range(day):
-            print(s1_allleft_peroneday_list)
-            print(S1_list)
-            print(i)
-            if i == 0 and s1_allleft_peroneday_list[i] == 0 and (S1_list[m][2][i+1] == 1) and S1_list[m][0] < 8:
+            if i == 0 and s1_allleft_peroneday_list[i] == 0 and (S1_list[m][2][i+1] == 1) and S1_list[m][0] < all_sun_sat:
                 S1_list[m][2][i] = 1
                 S1_list[m][0]+=1
                 s1_allleft_peroneday_list[i]+=1
-            elif i != day-1 and i != 0 and s1_allleft_peroneday_list[i] == 0 and (S1_list[m][2][i+1] == 1 or S1_list[m][2][i-1] == 1)and S1_list[m][0] < 8:
+            elif i != day-1 and i != 0 and s1_allleft_peroneday_list[i] == 0 and (S1_list[m][2][i+1] == 1 or S1_list[m][2][i-1] == 1)and S1_list[m][0] < all_sun_sat:
                 S1_list[m][2][i] = 1
                 S1_list[m][0]+=1
                 s1_allleft_peroneday_list[i]+=1
-            elif i == day-1 and s1_allleft_peroneday_list[i] == 0 and (S1_list[m][2][i-1] == 1)and S1_list[m][0] < 8:
+            elif i == day-1 and s1_allleft_peroneday_list[i] == 0 and (S1_list[m][2][i-1] == 1)and S1_list[m][0] < all_sun_sat:
                 S1_list[m][2][i] = 1
                 S1_list[m][0]+=1
                 s1_allleft_peroneday_list[i]+=1
         cycle+= 1
-        if cycle>day*3:
+        if cycle>day*10:
+            break
+    cycle = 0
+    while S2_list[m][0] < all_sun_sat:
+        for i in range(day):
+            if i == 0 and s2_allleft_peroneday_list[i] == 0 and (S2_list[m][2][i+1] == 1) and S2_list[m][0] < all_sun_sat:
+                S2_list[m][2][i] = 1
+                S2_list[m][0]+=1
+                s2_allleft_peroneday_list[i]+=1
+            elif i != day-1 and i != 0 and s2_allleft_peroneday_list[i] == 0 and (S2_list[m][2][i+1] == 1 or S2_list[m][2][i-1] == 1)and S2_list[m][0] < all_sun_sat:
+                S2_list[m][2][i] = 1
+                S2_list[m][0]+=1
+                s2_allleft_peroneday_list[i]+=1
+            elif i == day-1 and s2_allleft_peroneday_list[i] == 0 and (S2_list[m][2][i-1] == 1)and S2_list[m][0] < all_sun_sat:
+                S2_list[m][2][i] = 1
+                S2_list[m][0]+=1
+                s2_allleft_peroneday_list[i]+=1
+        cycle+= 1
+        if cycle>day*10:
             break
 print(s1_allleft_peroneday_list)
+# print(s2_allleft_peroneday_list)
 print(S1_list)
 # print(S2_list)
+# ==========================================================================================================
+# 將單日休假人數的日子補上還沒排滿all_sun_sat的人
+print(s1_allleft_peroneday_list.count(0))
+# print(s2_allleft_peroneday_list.count(0))
+for sun_sat_nobodyLike in range(s1_allleft_peroneday_list.count(0)):
+    for m in range(4):
+        if S1_list[m][0] != all_sun_sat:
+            for i in range(day):
+                if S1_list[m][2][i] == 0 and s1_allleft_peroneday_list[i] == 0 and S1_list[m][0] < all_sun_sat:
+                    S1_list[m][2][i] = 1
+                    S1_list[m][0]+=1
+                    s1_allleft_peroneday_list[i]+=1
+for sun_sat_nobodyLike in range(s2_allleft_peroneday_list.count(0)):
+    for m in range(4):
+        if S2_list[m][0] != all_sun_sat:
+            for i in range(day):
+                if S2_list[m][2][i] == 0 and s2_allleft_peroneday_list[i] == 0 and S2_list[m][0] < all_sun_sat:
+                    S2_list[m][2][i] = 1
+                    S2_list[m][0]+=1
+                    s2_allleft_peroneday_list[i]+=1
+print(s1_allleft_peroneday_list)
+print(s2_allleft_peroneday_list)
+print(S1_list)
+print(S2_list)
+# ==========================================================================================================
+# 如果每天都已經有人休假，但是還有人假還沒修完
+# if s1_allleft_peroneday_list.count(0) > 0:
+#     for 
+
+
