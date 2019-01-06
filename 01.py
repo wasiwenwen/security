@@ -19,7 +19,7 @@ S2_list = []
 def read8():
     # 讀出day/all_sun_sat/一開始的休假狀況
     global day , all_sun_sat , S1_list , S2_list
-    fh1 = open('vacation.csv', 'r', newline = '', encoding = 'utf-8') #newline 參數指定 open()不對換行字元做額外處理
+    fh1 = open('test.csv', 'r', newline = '', encoding = 'utf-8') #newline 參數指定 open()不對換行字元做額外處理
     csv1 = csv.DictReader(fh1) 
     cname1 = csv1.fieldnames #csv1.fieldnames 中為原始檔案第一列中的欄位名稱
     for aline in csv1:
@@ -39,7 +39,7 @@ def read8():
     fh1.close()
     # ==========================================================================================================
     # 讀入每個人的休假日狀況
-    fh1 = open('vacation.csv', 'r', newline = '', encoding = 'utf-8') #newline 參數指定 open()不對換行字元做額外處理
+    fh1 = open('test.csv', 'r', newline = '', encoding = 'utf-8') #newline 參數指定 open()不對換行字元做額外處理
     csv1 = csv.DictReader(fh1) 
     cname1 = csv1.fieldnames #csv1.fieldnames 中為原始檔案第一列中的欄位名稱
     S1_list = []
