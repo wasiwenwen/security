@@ -17,12 +17,13 @@ S2_list = []
 
 # 單一地點成員數
 member = 4
-
+# 
+file = 'vacation.csv'
 # ==========================================================================================================
-def read8():
+def read8(file):
     # 讀出day/all_sun_sat/一開始的休假狀況
     global day , all_sun_sat , S1_list , S2_list
-    fh1 = open('test.csv', 'r', newline = '', encoding = 'utf-8') #newline 參數指定 open()不對換行字元做額外處理
+    fh1 = open(file, 'r', newline = '', encoding = 'utf-8') #newline 參數指定 open()不對換行字元做額外處理
     csv1 = csv.DictReader(fh1) 
     cname1 = csv1.fieldnames #csv1.fieldnames 中為原始檔案第一列中的欄位名稱
     for aline in csv1:
@@ -42,7 +43,7 @@ def read8():
     fh1.close()
     # ==========================================================================================================
     # 讀入每個人的休假日狀況
-    fh1 = open('test.csv', 'r', newline = '', encoding = 'utf-8') #newline 參數指定 open()不對換行字元做額外處理
+    fh1 = open(file, 'r', newline = '', encoding = 'utf-8') #newline 參數指定 open()不對換行字元做額外處理
     csv1 = csv.DictReader(fh1) 
     cname1 = csv1.fieldnames #csv1.fieldnames 中為原始檔案第一列中的欄位名稱
     S1_list = []
@@ -64,8 +65,11 @@ def read8():
         elif list1[0] =='S2':
             S2_list.append(list)
     fh1.close()
+    return year , month
+
 # ==========================================================================================================
-read8()
+year , month = read8(file)
+
 # print(S1_list)
 # print(S2_list)
 # 依照已填休假日多到少排序
@@ -198,6 +202,53 @@ while s2_everyone_left_num.count(all_sun_sat) != member and s2_allleft_peroneday
 S1_list.sort()
 S2_list.sort()
 print(s1_allleft_peroneday_list)
-# print(s2_allleft_peroneday_list)
+print(s2_allleft_peroneday_list)
 print(S1_list)
-# print(S2_list)
+print(S2_list)
+# ==========================================================================================================
+# 如果大家假都修完，但是還是有某些日子沒人休息
+if s1_allleft_peroneday_list.count(0)>0:
+    need_your_left1 = ['','','','','','']
+    for i in range(day):
+        if s1_allleft_peroneday_list[i] == 0:
+            need_your_left1.append('需特休')
+        else:
+            need_your_left.append('')
+    print(need_your_left1)
+if s2_allleft_peroneday_list.count(0)>0:
+    need_your_left2 = ['','','','','','']
+    for i in range(day):
+        if s2_allleft_peroneday_list[i] == 0:
+            need_your_left2.append('需特休')
+        else:
+            need_your_left2.append('')
+    print(need_your_left2)
+# ==========================================================================================================
+# 寫出檔案
+with open(file, 'w', newline='', encoding = 'utf-8') as csvfile:
+     # 建立 CSV 檔寫入器
+    writer = csv.writer(csvfile)
+
+    # 寫入一列資料
+    writer.writerow(['year', 'month', 'group','name','prefer',1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31])
+
+    # 寫入另外幾列資料
+    for m in range(member):
+        s1_out = []
+        s1_out.append(year)
+        s1_out.append(month)
+        for i in range(3):
+            s1_out.append(S1_list[m][1][i])
+        for i in range(day):
+            s1_out.append(S1_list[m][2][i])
+        writer.writerow(s1_out)
+    for m in range(member):
+        s2_out = []
+        s2_out.append(year)
+        s2_out.append(month)
+        for i in range(3):
+            s2_out.append(S2_list[m][1][i])
+        for i in range(day):
+            s2_out.append(S2_list[m][2][i])
+        writer.writerow(s2_out)
+    csvfile.close()
