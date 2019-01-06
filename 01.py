@@ -66,7 +66,7 @@ def read8():
     fh1.close()
 # ==========================================================================================================
 read8()
-print(S1_list)
+# print(S1_list)
 # print(S2_list)
 # 依照已填休假日多到少排序
 S1_list.sort(reverse=True)
@@ -121,13 +121,13 @@ for m in range(member):
         cycle+= 1
         if cycle>day*member:
             break
-print(s1_allleft_peroneday_list)
+# print(s1_allleft_peroneday_list)
 # print(s2_allleft_peroneday_list)
-print(S1_list)
+# print(S1_list)
 # print(S2_list)
 # ==========================================================================================================
 # 將單日休假人數的日子補上還沒排滿all_sun_sat的人
-print(s1_allleft_peroneday_list.count(0))
+# print(s1_allleft_peroneday_list.count(0))
 # print(s2_allleft_peroneday_list.count(0))
 for sun_sat_nobodyLike in range(s1_allleft_peroneday_list.count(0)):
     for m in range(member):
@@ -145,9 +145,9 @@ for sun_sat_nobodyLike in range(s2_allleft_peroneday_list.count(0)):
                     S2_list[m][2][i] = 1
                     S2_list[m][0]+=1
                     s2_allleft_peroneday_list[i]+=1
-print(s1_allleft_peroneday_list)
+# print(s1_allleft_peroneday_list)
 # print(s2_allleft_peroneday_list)
-print(S1_list)
+# print(S1_list)
 # print(S2_list)
 # ==========================================================================================================
 # 如果每天都已經有人休假，但是還有人假還沒修完
@@ -196,6 +196,6 @@ while s2_everyone_left_num.count(all_sun_sat) != member and s2_allleft_peroneday
                 s2_allleft_peroneday_list[i]+=1
                 s2_everyone_left_num[m]+=1
 print(s1_allleft_peroneday_list)
-print(s2_allleft_peroneday_list)
+# print(s2_allleft_peroneday_list)
 print(S1_list)
-print(S2_list)
+# print(S2_list)
