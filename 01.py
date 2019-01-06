@@ -18,7 +18,8 @@ S2_list = []
 # 單一地點成員數
 member = 4
 # 
-file = 'vacation.csv'
+file_in  = 'v_in.csv'
+file_out = 'v_out.csv'
 # ==========================================================================================================
 def read8(file):
     # 讀出day/all_sun_sat/一開始的休假狀況
@@ -68,7 +69,7 @@ def read8(file):
     return year , month
 
 # ==========================================================================================================
-year , month = read8(file)
+year , month = read8(file_in)
 
 # print(S1_list)
 # print(S2_list)
@@ -225,7 +226,7 @@ if s2_allleft_peroneday_list.count(0)>0:
     print(need_your_left2)
 # ==========================================================================================================
 # 寫出檔案
-with open(file, 'w', newline='', encoding = 'utf-8') as csvfile:
+with open(file_out, 'w', newline='', encoding = 'utf-8') as csvfile:
      # 建立 CSV 檔寫入器
     writer = csv.writer(csvfile)
 
