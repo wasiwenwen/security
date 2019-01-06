@@ -1,7 +1,7 @@
 import csv
 import datetime
 import calendar
-
+import random
 
 # ==========================================================================================================
 # 初始值設定
@@ -14,6 +14,9 @@ all_sun_sat = 0
 # S1/S2的list
 S1_list = []
 S2_list = []
+
+# 單一地點成員數
+member = 4
 
 # ==========================================================================================================
 def read8():
@@ -81,7 +84,7 @@ for i in range(day):
     s2_allleft_peroneday_list.append(s2_allleft_peroneday)
 # ==========================================================================================================
 # 先把可以連假的狀況補上（前提是那天都沒有人休假）
-for m in range(4):
+for m in range(member):
     cycle = 0
     while S1_list[m][0] < all_sun_sat:
         for i in range(day):
@@ -98,7 +101,7 @@ for m in range(4):
                 S1_list[m][0]+=1
                 s1_allleft_peroneday_list[i]+=1
         cycle+= 1
-        if cycle>day*10:
+        if cycle>day*member:
             break
     cycle = 0
     while S2_list[m][0] < all_sun_sat:
@@ -116,7 +119,7 @@ for m in range(4):
                 S2_list[m][0]+=1
                 s2_allleft_peroneday_list[i]+=1
         cycle+= 1
-        if cycle>day*10:
+        if cycle>day*member:
             break
 print(s1_allleft_peroneday_list)
 # print(s2_allleft_peroneday_list)
@@ -127,7 +130,7 @@ print(S1_list)
 print(s1_allleft_peroneday_list.count(0))
 # print(s2_allleft_peroneday_list.count(0))
 for sun_sat_nobodyLike in range(s1_allleft_peroneday_list.count(0)):
-    for m in range(4):
+    for m in range(member):
         if S1_list[m][0] != all_sun_sat:
             for i in range(day):
                 if S1_list[m][2][i] == 0 and s1_allleft_peroneday_list[i] == 0 and S1_list[m][0] < all_sun_sat:
@@ -135,7 +138,7 @@ for sun_sat_nobodyLike in range(s1_allleft_peroneday_list.count(0)):
                     S1_list[m][0]+=1
                     s1_allleft_peroneday_list[i]+=1
 for sun_sat_nobodyLike in range(s2_allleft_peroneday_list.count(0)):
-    for m in range(4):
+    for m in range(member):
         if S2_list[m][0] != all_sun_sat:
             for i in range(day):
                 if S2_list[m][2][i] == 0 and s2_allleft_peroneday_list[i] == 0 and S2_list[m][0] < all_sun_sat:
@@ -143,12 +146,56 @@ for sun_sat_nobodyLike in range(s2_allleft_peroneday_list.count(0)):
                     S2_list[m][0]+=1
                     s2_allleft_peroneday_list[i]+=1
 print(s1_allleft_peroneday_list)
+# print(s2_allleft_peroneday_list)
+print(S1_list)
+# print(S2_list)
+# ==========================================================================================================
+# 如果每天都已經有人休假，但是還有人假還沒修完
+s1_everyone_left_num = [int(m[0]) for m in S1_list]
+# print(everyone_left_num)
+while s1_everyone_left_num.count(all_sun_sat) != member and s1_allleft_peroneday_list.count(0) == 0:
+    for m in range(member):
+        daylist = [int(i) for i in range(day)]
+        random.shuffle(daylist)
+        for i in daylist:
+            if i == 0 and s1_allleft_peroneday_list[i] == 1 and (S1_list[m][2][i+1] == 1) and (S1_list[m][2][i] == 0)and S1_list[m][0] < all_sun_sat:
+                S1_list[m][2][i] = 1
+                S1_list[m][0]+=1
+                s1_allleft_peroneday_list[i]+=1
+                s1_everyone_left_num[m]+=1
+            elif i != day-1 and i != 0 and s1_allleft_peroneday_list[i] == 1 and (S1_list[m][2][i+1] == 1 or S1_list[m][2][i-1] == 1) and (S1_list[m][2][i] == 0) and S1_list[m][0] < all_sun_sat:
+                S1_list[m][2][i] = 1
+                S1_list[m][0]+=1
+                s1_allleft_peroneday_list[i]+=1
+                s1_everyone_left_num[m]+=1
+            elif i == day-1 and s1_allleft_peroneday_list[i] == 1 and (S1_list[m][2][i-1] == 1) and (S1_list[m][2][i] == 0) and S1_list[m][0] < all_sun_sat:
+                S1_list[m][2][i] = 1
+                S1_list[m][0]+=1
+                s1_allleft_peroneday_list[i]+=1
+                s1_everyone_left_num[m]+=1
+s2_everyone_left_num = [int(m[0]) for m in S1_list]
+# print(everyone_left_num)
+while s2_everyone_left_num.count(all_sun_sat) != member and s2_allleft_peroneday_list.count(0) == 0:
+    for m in range(member):
+        daylist = [int(i) for i in range(day)]
+        random.shuffle(daylist)
+        for i in daylist:
+            if i == 0 and s2_allleft_peroneday_list[i] == 1 and (S2_list[m][2][i+1] == 1) and (S2_list[m][2][i] == 0)and S2_list[m][0] < all_sun_sat:
+                S2_list[m][2][i] = 1
+                S2_list[m][0]+=1
+                s2_allleft_peroneday_list[i]+=1
+                s2_everyone_left_num[m]+=1
+            elif i != day-1 and i != 0 and s2_allleft_peroneday_list[i] == 1 and (S2_list[m][2][i+1] == 1 or S2_list[m][2][i-1] == 1) and (S2_list[m][2][i] == 0) and S2_list[m][0] < all_sun_sat:
+                S2_list[m][2][i] = 1
+                S2_list[m][0]+=1
+                s2_allleft_peroneday_list[i]+=1
+                s2_everyone_left_num[m]+=1
+            elif i == day-1 and s2_allleft_peroneday_list[i] == 1 and (S2_list[m][2][i-1] == 1) and (S2_list[m][2][i] == 0) and S2_list[m][0] < all_sun_sat:
+                S2_list[m][2][i] = 1
+                S2_list[m][0]+=1
+                s2_allleft_peroneday_list[i]+=1
+                s2_everyone_left_num[m]+=1
+print(s1_allleft_peroneday_list)
 print(s2_allleft_peroneday_list)
 print(S1_list)
 print(S2_list)
-# ==========================================================================================================
-# 如果每天都已經有人休假，但是還有人假還沒修完
-# if s1_allleft_peroneday_list.count(0) > 0:
-#     for 
-
-
