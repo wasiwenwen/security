@@ -2,7 +2,7 @@ import csv
 import datetime
 import calendar
 import random
-
+from scheduling2 import *
 # ==========================================================================================================
 # 初始值設定
 
@@ -106,7 +106,7 @@ for m in range(member):
                 S1_list[m][0]+=1
                 s1_allleft_peroneday_list[i]+=1
         cycle+= 1
-        if cycle>day*member:
+        if cycle > day * member:
             break
 for m in range(member):
     cycle = 0
@@ -202,10 +202,10 @@ while s2_everyone_left_num.count(all_sun_sat) != member and s2_allleft_peroneday
                 s2_everyone_left_num[m]+=1
 S1_list.sort()
 S2_list.sort()
-print(s1_allleft_peroneday_list)
-print(s2_allleft_peroneday_list)
+# print(s1_allleft_peroneday_list)
+# print(s2_allleft_peroneday_list)
 print(S1_list)
-print(S2_list)
+# print(S2_list)
 # ==========================================================================================================
 # 如果大家假都修完，但是還是有某些日子沒人休息
 if s1_allleft_peroneday_list.count(0)>0:
@@ -214,7 +214,7 @@ if s1_allleft_peroneday_list.count(0)>0:
         if s1_allleft_peroneday_list[i] == 0:
             need_your_left1.append('需特休')
         else:
-            need_your_left.append('')
+            need_your_left1.append('')
     print(need_your_left1)
 if s2_allleft_peroneday_list.count(0)>0:
     need_your_left2 = ['','','','','','']
@@ -224,6 +224,9 @@ if s2_allleft_peroneday_list.count(0)>0:
         else:
             need_your_left2.append('')
     print(need_your_left2)
+# ==========================================================================================================
+S1_list = shift_schedule(S1_list, member)
+# S2_list = shift_schedule(S2_list, member)
 # ==========================================================================================================
 # 寫出檔案
 with open(file_out, 'w', newline='', encoding = 'utf-8') as csvfile:
