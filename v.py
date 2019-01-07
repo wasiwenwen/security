@@ -293,7 +293,7 @@ while s1_allleft_peroneday_list.count(0) != 0:
     print(S1_list)
     print(s1_allleft_peroneday_list)
     break
-while True:
+while s1_allleft_peroneday_list.count(0) != 0:
     order = 0
     H_check_list = [[],[],[],[]]
     for m1 , m2 , m3 , m4 in zip(S1_list[0][2] , S1_list[1][2] , S1_list[2][2] , S1_list[3][2]):
@@ -418,7 +418,7 @@ while s2_allleft_peroneday_list.count(0) != 0:
     print(S2_list)
     print(s2_allleft_peroneday_list)
     break
-while True:
+while s2_allleft_peroneday_list.count(0) != 0:
     order = 0
     H_check_list = [[],[],[],[]]
     for m1 , m2 , m3 , m4 in zip(S2_list[0][2] , S2_list[1][2] , S2_list[2][2] , S2_list[3][2]):
@@ -473,8 +473,7 @@ while True:
                 if m == changeMen:
                     break
                 else: H_check_list[m][changeDay] = 'F'
-    if s2_allleft_peroneday_list.count(0) == 0:
-        break
+
 # ==========================================================================================================
 # 寫出檔案
 with open(file_out, 'w', newline='', encoding = 'utf-8') as csvfile:
