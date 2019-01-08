@@ -520,7 +520,9 @@ with open(file_out, 'w', newline='', encoding = 'utf-8') as csvfile:
         for i in range(day):s2_out.append(S2_list[m][2][i])
         if 'A' in S2_list[m][2]: A = S2_list[m][2].count('A')
         if 'B' in S2_list[m][2]: B = S2_list[m][2].count('B')
-        if 'C' in S2_list[m][2]: C = S2_list[m][2].count('C')
+        if 'C' in S2_list[m][2]: 
+            C = S2_list[m][2].count('C') 
+            print(1111)
         if 'D' in S2_list[m][2]: D = S2_list[m][2].count('D')
         if 'E' in S2_list[m][2]: E = S2_list[m][2].count('E')
         if S1_list[m][1][2] == 'A':PR = A+D
