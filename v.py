@@ -1,26 +1,26 @@
+# ==========================================================================================================
+# ------------------------------------------------初始值設定-------------------------------------------------
 import csv
 import datetime
 import calendar
 import random
-
-# ==========================================================================================================
-# 初始值設定
-
 # 該月有幾天
 day = 0
 # 幾個假日
 all_sun_sat = 0
-
 # S1/S2的list
 S1_list = []
 S2_list = []
-
 # 單一地點成員數
 member = 4
-# 
+# 誰在哪天特休
+WhoChangeWhichDay1 = [[],[],[],[]]
+WhoChangeWhichDay2 = [[],[],[],[]]
+# 匯入匯出檔案
 file_in  = 'v_in.csv'
 file_out = 'v_out.csv'
 # ==========================================================================================================
+# ------------------------------------------------讀檔案-----------------------------------------------------
 def read8(file):
     # 讀出day/all_sun_sat/一開始的休假狀況
     global day , all_sun_sat , S1_list , S2_list
@@ -33,7 +33,6 @@ def read8(file):
         break
     # 該月有幾天
     day = int(calendar.monthrange(year , month)[1])
-    # print(day)
     # 幾個假日
     sunday_to_count     = calendar.SUNDAY
     saturday_to_count   = calendar.SATURDAY
@@ -67,11 +66,8 @@ def read8(file):
             S2_list.append(list)
     fh1.close()
     return year , month
-# ==========================================================================================================
 year , month = read8(file_in)
-
-# print(S1_list)
-# print(S2_list)
+# ==========================================================================================================
 # 依照已填休假日多到少排序
 S1_list.sort(reverse=True)
 S2_list.sort(reverse=True)
@@ -87,6 +83,7 @@ for i in range(day):
     s1_allleft_peroneday_list.append(s1_allleft_peroneday)
     s2_allleft_peroneday_list.append(s2_allleft_peroneday)
 # ==========================================================================================================
+# ------------------------------------------------建議休假日-------------------------------------------------
 # 先把可以連假的狀況補上（前提是那天都沒有人休假）
 for m in range(member):
     cycle = 0
@@ -105,8 +102,7 @@ for m in range(member):
                 S1_list[m][0]+=1
                 s1_allleft_peroneday_list[i]+=1
         cycle+= 1
-        if cycle>day*member:
-            break
+        if cycle>day*member: break
 for m in range(member):
     cycle = 0
     while S2_list[m][0] < all_sun_sat:
@@ -124,16 +120,9 @@ for m in range(member):
                 S2_list[m][0]+=1
                 s2_allleft_peroneday_list[i]+=1
         cycle+= 1
-        if cycle>day*member:
-            break
-# print(s1_allleft_peroneday_list)
-# print(s2_allleft_peroneday_list)
-# print(S1_list)
-# print(S2_list)
-# ==========================================================================================================
+        if cycle>day*member: break
+# ------------------------------------------------------------------------------------------------------------------------------------------------
 # 將單日休假人數的日子補上還沒排滿all_sun_sat的人
-# print(s1_allleft_peroneday_list.count(0))
-# print(s2_allleft_peroneday_list.count(0))
 for sun_sat_nobodyLike in range(s1_allleft_peroneday_list.count(0)):
     for m in range(member):
         if S1_list[m][0] != all_sun_sat:
@@ -150,11 +139,7 @@ for sun_sat_nobodyLike in range(s2_allleft_peroneday_list.count(0)):
                     S2_list[m][2][i] = 1
                     S2_list[m][0]+=1
                     s2_allleft_peroneday_list[i]+=1
-# print(s1_allleft_peroneday_list)
-# print(s2_allleft_peroneday_list)
-# print(S1_list)
-# print(S2_list)
-# ==========================================================================================================
+# ------------------------------------------------------------------------------------------------------------------------------------------------
 # 如果每天都已經有人休假，但是還有人假還沒修完
 s1_everyone_left_num = [int(m[0]) for m in S1_list]
 while s1_everyone_left_num.count(all_sun_sat) != member and s1_allleft_peroneday_list.count(0) == 0:
@@ -177,7 +162,6 @@ while s1_everyone_left_num.count(all_sun_sat) != member and s1_allleft_peroneday
                 S1_list[m][0]+=1
                 s1_allleft_peroneday_list[i]+=1
                 s1_everyone_left_num[m]+=1
-
 s2_everyone_left_num = [int(m[0]) for m in S2_list]
 while s2_everyone_left_num.count(all_sun_sat) != member and s2_allleft_peroneday_list.count(0) == 0:
     for m in range(member):
@@ -201,30 +185,8 @@ while s2_everyone_left_num.count(all_sun_sat) != member and s2_allleft_peroneday
                 s2_everyone_left_num[m]+=1
 S1_list.sort()
 S2_list.sort()
-print(s1_allleft_peroneday_list)
-# print(s2_allleft_peroneday_list)
-print(S1_list)
-# print(S2_list)
 # ==========================================================================================================
-# 如果大家假都修完，但是還是有某些日子沒人休息
-# if s1_allleft_peroneday_list.count(0)>0:
-#     need_your_left1 = ['','','','','','']
-#     for i in range(day):
-#         if s1_allleft_peroneday_list[i] == 0:
-#             need_your_left1.append('需特休')
-#         else:
-#             need_your_left1.append('')
-#     print(need_your_left1)
-# if s2_allleft_peroneday_list.count(0)>0:
-#     need_your_left2 = ['','','','','','']
-#     for i in range(day):
-#         if s2_allleft_peroneday_list[i] == 0:
-#             need_your_left2.append('需特休')
-#         else:
-#             need_your_left2.append('')
-#     print(need_your_left2)
-# ==========================================================================================================
-# 塞特休
+# -------------------------------------------------建議特休--------------------------------------------------
 # 判斷連假
 while s1_allleft_peroneday_list.count(0) != 0:
     order = 0
@@ -234,25 +196,18 @@ while s1_allleft_peroneday_list.count(0) != 0:
         if day_schedule.count(1) == 0:
             for m in range(member):
                 if order == 0:
-                    if S1_list[m][2][order] == 0 and S1_list[m][2][order + 1] == 1:
-                        H_check_list[m].append('T')
+                    if S1_list[m][2][order] == 0 and S1_list[m][2][order + 1] == 1: H_check_list[m].append('T')
                     else: H_check_list[m].append('F')
                 elif order == day - 1:
-                    if S1_list[m][2][order] == 0 and S1_list[m][2][order - 1] == 1:
-                        H_check_list[m].append('T')
+                    if S1_list[m][2][order] == 0 and S1_list[m][2][order - 1] == 1: H_check_list[m].append('T')
                     else: H_check_list[m].append('F')
                 else:
-                    if S1_list[m][2][order] == 0 and (S1_list[m][2][order + 1] == 1 and S1_list[m][2][order - 1] == 1):
-                        H_check_list[m].append('P')
-                    elif S1_list[m][2][order] == 0 and ((S1_list[m][2][order + 1] == 1 and S1_list[m][2][order - 1] == 0) or (S1_list[m][2][order + 1] == 0 and S1_list[m][2][order - 1] == 1)):
-                        H_check_list[m].append('T')
+                    if S1_list[m][2][order] == 0 and (S1_list[m][2][order + 1] == 1 and S1_list[m][2][order - 1] == 1): H_check_list[m].append('P')
+                    elif S1_list[m][2][order] == 0 and ((S1_list[m][2][order + 1] == 1 and S1_list[m][2][order - 1] == 0) or (S1_list[m][2][order + 1] == 0 and S1_list[m][2][order - 1] == 1)): H_check_list[m].append('T')
                     else: H_check_list[m].append('F')
         else:
-            for m in range(member):
-                H_check_list[m].append('F')
+            for m in range(member): H_check_list[m].append('F')
         order += 1
-    print(H_check_list)
-    # 第一次做就好
     nPTm_list = []
     for m in range(member):
         PTone_list = []
@@ -263,10 +218,9 @@ while s1_allleft_peroneday_list.count(0) != 0:
         PTone_list.append(T)
         PTone_list.append(m)
         nPTm_list.append(PTone_list)
-    # print(nPTm_list)
     nPTm_list.sort(reverse=True)
-    print(nPTm_list)
     # 先換一天每人一天
+    WhoChangeWhichDay1 = [[],[],[],[]]
     for sort in range(member):
         changeMen = nPTm_list[sort][3]
         if H_check_list[changeMen].count('P') > 0:
@@ -275,25 +229,24 @@ while s1_allleft_peroneday_list.count(0) != 0:
             S1_list[changeMen][2][changeDay] = 1
             nPTm_list[sort][0] -= 1
             s1_allleft_peroneday_list[changeDay] = 1
+            WhoChangeWhichDay1[changeMen].append(changeDay)
             for m in range(member):
-                if m == changeMen:
-                    break
+                if m == changeMen:break
                 else: H_check_list[m][changeDay] = 'F'
         elif H_check_list[changeMen].count('T') > 0 and H_check_list[changeMen].count('P') == 0:
-            
             changeDay = H_check_list[changeMen].index('T')
             H_check_list[changeMen][changeDay] = 'F'
             S1_list[changeMen][2][changeDay] = 1
             nPTm_list[sort][0] += -1
             s1_allleft_peroneday_list[changeDay] = 1
+            WhoChangeWhichDay1[changeMen].append(changeDay)
             for m in range(member):
-                if m == changeMen:
-                    break
+                if m == changeMen:break
                 else: H_check_list[m][changeDay] = 'F'
-    print(S1_list)
-    print(s1_allleft_peroneday_list)
     break
+cycle = 0
 while s1_allleft_peroneday_list.count(0) != 0:
+    cycle += 1
     order = 0
     H_check_list = [[],[],[],[]]
     for m1 , m2 , m3 , m4 in zip(S1_list[0][2] , S1_list[1][2] , S1_list[2][2] , S1_list[3][2]):
@@ -301,24 +254,19 @@ while s1_allleft_peroneday_list.count(0) != 0:
         if day_schedule.count(1) == 0:
             for m in range(member):
                 if order == 0:
-                    if S1_list[m][2][order] == 0 and S1_list[m][2][order + 1] == 1:
-                        H_check_list[m].append('T')
+                    if S1_list[m][2][order] == 0 and S1_list[m][2][order + 1] == 1: H_check_list[m].append('T')
                     else: H_check_list[m].append('F')
                 elif order == day - 1:
-                    if S1_list[m][2][order] == 0 and S1_list[m][2][order - 1] == 1:
-                        H_check_list[m].append('T')
+                    if S1_list[m][2][order] == 0 and S1_list[m][2][order - 1] == 1: H_check_list[m].append('T')
                     else: H_check_list[m].append('F')
                 else:
-                    if S1_list[m][2][order] == 0 and (S1_list[m][2][order + 1] == 1 and S1_list[m][2][order - 1] == 1):
-                        H_check_list[m].append('P')
-                    elif S1_list[m][2][order] == 0 and ((S1_list[m][2][order + 1] == 1 and S1_list[m][2][order - 1] == 0) or (S1_list[m][2][order + 1] == 0 and S1_list[m][2][order - 1] == 1)):
-                        H_check_list[m].append('T')
+                    if S1_list[m][2][order] == 0 and (S1_list[m][2][order + 1] == 1 and S1_list[m][2][order - 1] == 1): H_check_list[m].append('P')
+                    elif S1_list[m][2][order] == 0 and ((S1_list[m][2][order + 1] == 1 and S1_list[m][2][order - 1] == 0) or (S1_list[m][2][order + 1] == 0 and S1_list[m][2][order - 1] == 1)): H_check_list[m].append('T')
                     else: H_check_list[m].append('F')
         else:
-            for m in range(member):
-                H_check_list[m].append('F')
+            for m in range(member): H_check_list[m].append('F')
         order += 1
-
+    offday_permen = [len(WhoChangeWhichDay1[0]),len(WhoChangeWhichDay1[1]),len(WhoChangeWhichDay1[2]),len(WhoChangeWhichDay1[3])]
     for m in range(member):
         sort = nPTm_list[m][3]
         P = H_check_list[sort].count('P')
@@ -328,27 +276,46 @@ while s1_allleft_peroneday_list.count(0) != 0:
     nPTm_list.sort(reverse=True)
     for sort in range(member):
         changeMen = nPTm_list[sort][3]
-        if H_check_list[changeMen].count('P') > 0:
+        if H_check_list[changeMen].count('P') > 0 and len(WhoChangeWhichDay1[sort]) < min(offday_permen):
             changeDay = H_check_list[changeMen].index('P')
             H_check_list[changeMen][changeDay] = 'F'
             S1_list[changeMen][2][changeDay] = 1
             nPTm_list[sort][0] -= 1
             s1_allleft_peroneday_list[changeDay] = 1
+            WhoChangeWhichDay1[changeMen].append(changeDay)
             for m in range(member):
-                if m == changeMen:
-                    break
+                if m == changeMen: break
                 else: H_check_list[m][changeDay] = 'F'
-        elif H_check_list[changeMen].count('T') > 0 and H_check_list[changeMen].count('P') == 0:
+        elif H_check_list[changeMen].count('T') > 0 and H_check_list[changeMen].count('P') == 0 and len(WhoChangeWhichDay1[sort]) < min(offday_permen):
             changeDay = H_check_list[changeMen].index('T')
             H_check_list[changeMen][changeDay] = 'F'
             S1_list[changeMen][2][changeDay] = 1
             nPTm_list[sort][0] -= 1
             s1_allleft_peroneday_list[changeDay] = 1
+            WhoChangeWhichDay1[changeMen].append(changeDay)
             for m in range(member):
-                if m == changeMen:
-                    break
+                if m == changeMen: break
                 else: H_check_list[m][changeDay] = 'F'
-    if s1_allleft_peroneday_list.count(0) == 0:
+    if s1_allleft_peroneday_list.count(0) == 0 : 
+        break
+    if cycle > 5: #讓特休平均分佈
+        while offday_permen[0] != offday_permen[1] and offday_permen[1] != offday_permen[2] and offday_permen[2] != offday_permen[3] or s1_allleft_peroneday_list.count(0) != 0:
+            for d in range(day):
+                if s1_allleft_peroneday_list[d] == 0:
+                    changeMen = offday_permen.index(min(offday_permen))
+                    changeDay = d
+                    H_check_list[changeMen][changeDay] = 'F'
+                    S1_list[changeMen][2][changeDay] = 1
+                    for sort in range(member):
+                        if changeMen == nPTm_list[sort][3]:
+                            nPTm_list[sort][0] -= 1
+                            break
+                    s1_allleft_peroneday_list[changeDay] = 1
+                    WhoChangeWhichDay1[changeMen].append(changeDay)
+                    offday_permen[changeMen] +=1
+                    for m in range(member):
+                        if m == changeMen: break
+                        else: H_check_list[m][changeDay] = 'F'
         break
 # --------s2
 while s2_allleft_peroneday_list.count(0) != 0:
@@ -359,24 +326,18 @@ while s2_allleft_peroneday_list.count(0) != 0:
         if day_schedule.count(1) == 0:
             for m in range(member):
                 if order == 0:
-                    if S2_list[m][2][order] == 0 and S2_list[m][2][order + 1] == 1:
-                        H_check_list[m].append('T')
+                    if S2_list[m][2][order] == 0 and S2_list[m][2][order + 1] == 1: H_check_list[m].append('T')
                     else: H_check_list[m].append('F')
                 elif order == day - 1:
-                    if S2_list[m][2][order] == 0 and S2_list[m][2][order - 1] == 1:
-                        H_check_list[m].append('T')
+                    if S2_list[m][2][order] == 0 and S2_list[m][2][order - 1] == 1: H_check_list[m].append('T')
                     else: H_check_list[m].append('F')
                 else:
-                    if S2_list[m][2][order] == 0 and (S2_list[m][2][order + 1] == 1 and S2_list[m][2][order - 1] == 1):
-                        H_check_list[m].append('P')
-                    elif S2_list[m][2][order] == 0 and ((S2_list[m][2][order + 1] == 1 and S2_list[m][2][order - 1] == 0) or (S2_list[m][2][order + 1] == 0 and S2_list[m][2][order - 1] == 1)):
-                        H_check_list[m].append('T')
+                    if S2_list[m][2][order] == 0 and (S2_list[m][2][order + 1] == 1 and S2_list[m][2][order - 1] == 1): H_check_list[m].append('P')
+                    elif S2_list[m][2][order] == 0 and ((S2_list[m][2][order + 1] == 1 and S2_list[m][2][order - 1] == 0) or (S2_list[m][2][order + 1] == 0 and S2_list[m][2][order - 1] == 1)): H_check_list[m].append('T')
                     else: H_check_list[m].append('F')
         else:
-            for m in range(member):
-                H_check_list[m].append('F')
+            for m in range(member): H_check_list[m].append('F')
         order += 1
-    print(H_check_list)
     # 第一次做就好
     nPTm_list = []
     for m in range(member):
@@ -388,9 +349,7 @@ while s2_allleft_peroneday_list.count(0) != 0:
         PTone_list.append(T)
         PTone_list.append(m)
         nPTm_list.append(PTone_list)
-    # print(nPTm_list)
     nPTm_list.sort(reverse=True)
-    print(nPTm_list)
     # 先換一天每人一天
     for sort in range(member):
         changeMen = nPTm_list[sort][3]
@@ -400,25 +359,24 @@ while s2_allleft_peroneday_list.count(0) != 0:
             S2_list[changeMen][2][changeDay] = 1
             nPTm_list[sort][0] -= 1
             s2_allleft_peroneday_list[changeDay] = 1
+            WhoChangeWhichDay2[changeMen].append(changeDay)
             for m in range(member):
-                if m == changeMen:
-                    break
+                if m == changeMen:break
                 else: H_check_list[m][changeDay] = 'F'
         elif H_check_list[changeMen].count('T') > 0 and H_check_list[changeMen].count('P') == 0:
-            
             changeDay = H_check_list[changeMen].index('T')
             H_check_list[changeMen][changeDay] = 'F'
             S2_list[changeMen][2][changeDay] = 1
             nPTm_list[sort][0] += -1
             s2_allleft_peroneday_list[changeDay] = 1
+            WhoChangeWhichDay2[changeMen].append(changeDay)
             for m in range(member):
-                if m == changeMen:
-                    break
+                if m == changeMen:break
                 else: H_check_list[m][changeDay] = 'F'
-    print(S2_list)
-    print(s2_allleft_peroneday_list)
     break
+cycle = 0
 while s2_allleft_peroneday_list.count(0) != 0:
+    cycle += 1
     order = 0
     H_check_list = [[],[],[],[]]
     for m1 , m2 , m3 , m4 in zip(S2_list[0][2] , S2_list[1][2] , S2_list[2][2] , S2_list[3][2]):
@@ -426,24 +384,19 @@ while s2_allleft_peroneday_list.count(0) != 0:
         if day_schedule.count(1) == 0:
             for m in range(member):
                 if order == 0:
-                    if S2_list[m][2][order] == 0 and S2_list[m][2][order + 1] == 1:
-                        H_check_list[m].append('T')
+                    if S2_list[m][2][order] == 0 and S2_list[m][2][order + 1] == 1: H_check_list[m].append('T')
                     else: H_check_list[m].append('F')
                 elif order == day - 1:
-                    if S2_list[m][2][order] == 0 and S2_list[m][2][order - 1] == 1:
-                        H_check_list[m].append('T')
+                    if S2_list[m][2][order] == 0 and S2_list[m][2][order - 1] == 1: H_check_list[m].append('T')
                     else: H_check_list[m].append('F')
                 else:
-                    if S2_list[m][2][order] == 0 and (S2_list[m][2][order + 1] == 1 and S2_list[m][2][order - 1] == 1):
-                        H_check_list[m].append('P')
-                    elif S2_list[m][2][order] == 0 and ((S2_list[m][2][order + 1] == 1 and S2_list[m][2][order - 1] == 0) or (S2_list[m][2][order + 1] == 0 and S2_list[m][2][order - 1] == 1)):
-                        H_check_list[m].append('T')
+                    if S2_list[m][2][order] == 0 and (S2_list[m][2][order + 1] == 1 and S2_list[m][2][order - 1] == 1): H_check_list[m].append('P')
+                    elif S2_list[m][2][order] == 0 and ((S2_list[m][2][order + 1] == 1 and S2_list[m][2][order - 1] == 0) or (S2_list[m][2][order + 1] == 0 and S2_list[m][2][order - 1] == 1)): H_check_list[m].append('T')
                     else: H_check_list[m].append('F')
         else:
-            for m in range(member):
-                H_check_list[m].append('F')
+            for m in range(member): H_check_list[m].append('F')
         order += 1
-
+    offday_permen = [len(WhoChangeWhichDay2[0]),len(WhoChangeWhichDay2[1]),len(WhoChangeWhichDay2[2]),len(WhoChangeWhichDay2[3])]
     for m in range(member):
         sort = nPTm_list[m][3]
         P = H_check_list[sort].count('P')
@@ -453,53 +406,87 @@ while s2_allleft_peroneday_list.count(0) != 0:
     nPTm_list.sort(reverse=True)
     for sort in range(member):
         changeMen = nPTm_list[sort][3]
-        if H_check_list[changeMen].count('P') > 0:
+        if H_check_list[changeMen].count('P') > 0 and len(WhoChangeWhichDay2[sort]) < min(offday_permen):
             changeDay = H_check_list[changeMen].index('P')
             H_check_list[changeMen][changeDay] = 'F'
             S2_list[changeMen][2][changeDay] = 1
             nPTm_list[sort][0] -= 1
             s2_allleft_peroneday_list[changeDay] = 1
+            WhoChangeWhichDay2[changeMen].append(changeDay)
             for m in range(member):
-                if m == changeMen:
-                    break
+                if m == changeMen: break
                 else: H_check_list[m][changeDay] = 'F'
-        elif H_check_list[changeMen].count('T') > 0 and H_check_list[changeMen].count('P') == 0:
+        elif H_check_list[changeMen].count('T') > 0 and H_check_list[changeMen].count('P') == 0 and len(WhoChangeWhichDay2[sort]) < min(offday_permen):
             changeDay = H_check_list[changeMen].index('T')
             H_check_list[changeMen][changeDay] = 'F'
             S2_list[changeMen][2][changeDay] = 1
             nPTm_list[sort][0] -= 1
             s2_allleft_peroneday_list[changeDay] = 1
+            WhoChangeWhichDay2[changeMen].append(changeDay)
             for m in range(member):
-                if m == changeMen:
-                    break
+                if m == changeMen: break
                 else: H_check_list[m][changeDay] = 'F'
-
+    if s2_allleft_peroneday_list.count(0) == 0 : 
+        break
+    if cycle > 5: #讓特休平均分佈
+        while offday_permen[0] != offday_permen[1] and offday_permen[1] != offday_permen[2] and offday_permen[2] != offday_permen[3] or s2_allleft_peroneday_list.count(0) != 0:
+            for d in range(day):
+                if s2_allleft_peroneday_list[d] == 0:
+                    changeMen = offday_permen.index(min(offday_permen))
+                    changeDay = d
+                    H_check_list[changeMen][changeDay] = 'F'
+                    S2_list[changeMen][2][changeDay] = 1
+                    for sort in range(member):
+                        if changeMen == nPTm_list[sort][3]:
+                            nPTm_list[sort][0] -= 1
+                            break
+                    s2_allleft_peroneday_list[changeDay] = 1
+                    WhoChangeWhichDay2[changeMen].append(changeDay)
+                    offday_permen[changeMen] +=1
+                    for m in range(member):
+                        if m == changeMen: break
+                        else: H_check_list[m][changeDay] = 'F'
+        break
 # ==========================================================================================================
-# 寫出檔案
+# ----------------------------------------------建議班別-----------------------------------------------------
+# S1_list = shift_schedule(S1_list, member)
+# S2_list = shift_schedule(S2_list, member)
+# ==========================================================================================================
+# ---------------------------------轉換成可以理解的班別代號-----------------------------------------------------
+def shiftName(Slist, WhoChangeWhichDay):
+    for m1 , m2 , m3 , m4 in zip(Slist[0],Slist[1],Slist[2],Slist[3]):
+        Day = 0
+        day_schedule = [m1,m2,m3,m4]
+        if 'B' not in day_schedule and 'A'in day_schedule and'C' in day_schedule:
+            Slist[day_schedule.index('A')][2][Day] = 'D'
+            Slist[day_schedule.index('C')][2][Day] = 'E'
+        Day+=1
+    for i in range(day):
+        for m in range(member):
+            if Slist[m][2][i] == 1 and i not in WhoChangeWhichDay[m]: Slist[m][2][i] = 'L'
+            elif Slist[m][2][i] == 1 and i in WhoChangeWhichDay[m]: Slist[m][2][i] = 'AL'
+shiftName(S1_list,WhoChangeWhichDay1)
+shiftName(S2_list,WhoChangeWhichDay2)
+# ==========================================================================================================
+# ----------------------------------------------寫出檔案-----------------------------------------------------
 with open(file_out, 'w', newline='', encoding = 'utf-8') as csvfile:
      # 建立 CSV 檔寫入器
     writer = csv.writer(csvfile)
-
     # 寫入一列資料
     writer.writerow(['year', 'month', 'group','name','prefer',1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31])
-
     # 寫入另外幾列資料
     for m in range(member):
         s1_out = []
         s1_out.append(year)
         s1_out.append(month)
-        for i in range(3):
-            s1_out.append(S1_list[m][1][i])
-        for i in range(day):
-            s1_out.append(S1_list[m][2][i])
+        for i in range(3):s1_out.append(S1_list[m][1][i])
+        for i in range(day):s1_out.append(S1_list[m][2][i])
         writer.writerow(s1_out)
     for m in range(member):
         s2_out = []
         s2_out.append(year)
         s2_out.append(month)
-        for i in range(3):
-            s2_out.append(S2_list[m][1][i])
-        for i in range(day):
-            s2_out.append(S2_list[m][2][i])
+        for i in range(3):s2_out.append(S2_list[m][1][i])
+        for i in range(day):s2_out.append(S2_list[m][2][i])
         writer.writerow(s2_out)
     csvfile.close()
