@@ -17,10 +17,10 @@ member = 4
 # 誰在哪天特休
 WhoChangeWhichDay1 = [[],[],[],[]]
 WhoChangeWhichDay2 = [[],[],[],[]]
-offday_permen = [[],[],[],[]]
-offday_permen2 = [[],[],[],[]]
+offday_permen = [0,0,0,0]
+offday_permen2 = [0,0,0,0]
 # 匯入匯出檔案
-file_in  = 'innnn.csv'
+file_in  = 'in(28).csv'
 file_out = 'v_out.csv'
 # ==========================================================================================================
 # ------------------------------------------------讀檔案-----------------------------------------------------
@@ -512,7 +512,6 @@ with open(file_out, 'w', newline='', encoding = 'utf-8') as csvfile:
         s1_out.append(WH)
         s1_out.append(OH)
         writer.writerow(s1_out)
-        print(s1_out)
     for m in range(member):
         s2_out = []
         s2_out.append(year)
