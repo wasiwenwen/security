@@ -458,7 +458,7 @@ S2_list = shift_schedule(S2_list, member)
 # ==========================================================================================================
 # ---------------------------------轉換成可以理解的班別代號-----------------------------------------------------
 def shiftName(Slist, WhoChangeWhichDay):
-    for m1 , m2 , m3 , m4 in zip(Slist[0],Slist[1],Slist[2],Slist[3]):
+    for m1 , m2 , m3 , m4 in zip(Slist[0][2],Slist[1][2],Slist[2][2],Slist[3][2]):
         Day = 0
         day_schedule = [m1,m2,m3,m4]
         if 'B' not in day_schedule and 'A'in day_schedule and'C' in day_schedule:
