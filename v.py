@@ -472,14 +472,7 @@ def shiftName(Slist, WhoChangeWhichDay):
 shiftName(S1_list,WhoChangeWhichDay1)
 shiftName(S2_list,WhoChangeWhichDay2)
 # ==========================================================================================================
-
 # ----------------------------------------------寫出檔案-----------------------------------------------------
-A = 0
-B = 0
-C = 0
-D = 0
-E = 0
-PR = 0
 with open(file_out, 'w', newline='', encoding = 'utf-8') as csvfile:
      # 建立 CSV 檔寫入器
     writer = csv.writer(csvfile)
@@ -487,56 +480,79 @@ with open(file_out, 'w', newline='', encoding = 'utf-8') as csvfile:
     writer.writerow(['year', 'month', 'group','name','prefer',1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,'A','B','C','D','E','PR','L','AL','WH','OH'])
     # 寫入另外幾列資料
     for m in range(member):
+        A = 0
+        B = 0
+        C = 0
+        D = 0
+        E = 0
+        PR = 0
+        AL = 0
         s1_out = []
         s1_out.append(year)
         s1_out.append(month)
         for i in range(3):s1_out.append(S1_list[m][1][i])
         for i in range(day):s1_out.append(S1_list[m][2][i])
+        if day < 31:
+            for i in range(31-day):
+                s1_out.append('-')
         if 'A' in S1_list[m][2]: A = S1_list[m][2].count('A')
         if 'B' in S1_list[m][2]: B = S1_list[m][2].count('B')
         if 'C' in S1_list[m][2]: C = S1_list[m][2].count('C')
         if 'D' in S1_list[m][2]: D = S1_list[m][2].count('D')
         if 'E' in S1_list[m][2]: E = S1_list[m][2].count('E')
-        if S1_list[m][1][2] == 'A':PR = A+D
-        else:PR = C+E
-        WH = (A+B+C)*8 + (D+E)*12
-        OH = (D+E)*4
         s1_out.append(A)
         s1_out.append(B)
         s1_out.append(C)
         s1_out.append(D)
         s1_out.append(E)
+        if S1_list[m][1][2] == 'A':PR = A+D
+        else:PR = C+E
         s1_out.append(PR)
-        s1_out.append(S1_list[m][0])
-        s1_out.append(offday_permen[m])
+        if 'L' in S1_list[m][2]: L = S1_list[m][2].count('L')
+        if 'AL' in S1_list[m][2]: AL = S1_list[m][2].count('AL')
+        s1_out.append(L)
+        s1_out.append(AL)
+        WH = (A+B+C)*8 + (D+E)*12
+        OH = (D+E)*4
         s1_out.append(WH)
         s1_out.append(OH)
         writer.writerow(s1_out)
+
     for m in range(member):
+        A = 0
+        B = 0
+        C = 0
+        D = 0
+        E = 0
+        PR = 0
+        AL = 0
         s2_out = []
         s2_out.append(year)
         s2_out.append(month)
         for i in range(3):s2_out.append(S2_list[m][1][i])
         for i in range(day):s2_out.append(S2_list[m][2][i])
+        if day < 31:
+            for i in range(31-day):
+                s2_out.append('-')
         if 'A' in S2_list[m][2]: A = S2_list[m][2].count('A')
         if 'B' in S2_list[m][2]: B = S2_list[m][2].count('B')
-        if 'C' in S2_list[m][2]: 
-            C = S2_list[m][2].count('C') 
-            print(1111)
+        if 'C' in S2_list[m][2]: C = S2_list[m][2].count('C')
         if 'D' in S2_list[m][2]: D = S2_list[m][2].count('D')
         if 'E' in S2_list[m][2]: E = S2_list[m][2].count('E')
-        if S1_list[m][1][2] == 'A':PR = A+D
-        else:PR = C+E
-        WH = (A+B+C)*8 + (D+E)*12
-        OH = (D+E)*4
         s2_out.append(A)
         s2_out.append(B)
         s2_out.append(C)
         s2_out.append(D)
         s2_out.append(E)
+        if S2_list[m][1][2] == 'A':PR = A+D
+        else:PR = C+E
         s2_out.append(PR)
-        s2_out.append(S2_list[m][0])
-        s2_out.append(offday_permen2[m])
+        if 'L' in S2_list[m][2]: L = S2_list[m][2].count('L')
+        if 'AL' in S2_list[m][2]: AL = S2_list[m][2].count('AL')
+        s2_out.append(L)
+        s2_out.append(AL)
+        WH = (A+B+C)*8 + (D+E)*12
+        OH = (D+E)*4
         s2_out.append(WH)
         s2_out.append(OH)
         writer.writerow(s2_out)
