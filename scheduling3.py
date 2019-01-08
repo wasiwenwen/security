@@ -3,12 +3,12 @@ import random
 from collections import Counter
 #S1_list[m][2] 是 目前的班表
 # A B C
-member = 4
-S1_list = [[8, ['S1', 'M1', 'A'], [1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0]], [8, ['S1', 'M2', 'B'], [0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0]], [8, ['S1', 'M3', 'A'], [1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1]], [8, ['S1', 'M4', 'C'], [0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 0]]]
+# member = 4
+# S1_list = [[8, ['S1', 'M1', 'A'], [1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0]], [8, ['S1', 'M2', 'B'], [0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0]], [8, ['S1', 'M3', 'A'], [1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1]], [8, ['S1', 'M4', 'C'], [0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 0]]]
 
-b_A = ["A", "D"]
-b_B = ["A", "B", "D"]
-b_C = ["A", "B", "C", "D", "E"]
+# b_A = ["A", "D"]
+# b_B = ["A", "B", "D"]
+# b_C = ["A", "B", "C", "D", "E"]
 
  
 
@@ -118,13 +118,14 @@ def shift_schedule(S_list, member):
 	
 	# 當還有人沒有被排班
 	not_done = True
+	# for i in range(10):
 	while not_done:
 		not_done = False
 		# 先排三缺一的限定班
 		only_work(schedule)
 		# 再按照喜好排班
-		replace_by_prefer(schedule, prefer, point)
-		
+		not_done = replace_by_prefer(schedule, prefer, point, not_done)
+	# print(schedule)
 	# 最後輸出
 	for i in range(member):
 		S_list[i][2] = schedule[i]
@@ -172,8 +173,7 @@ def only_work(schedule):
 			Day += 1
 			
 
-def replace_by_prefer(schedule, prefer, point):
-	global not_done
+def replace_by_prefer(schedule, prefer, point, check_done):
 	Day = 0
 	for m1, m2, m3, m4 in zip(schedule[0], schedule[1], schedule[2], schedule[3]):
 		day_schedule = [m1, m2, m3, m4]
@@ -197,15 +197,7 @@ def replace_by_prefer(schedule, prefer, point):
 			else: #如果兩人喜好重複
 				#先比點數
 				prefer1 = prefer[notyet_m[0]]
-				# for m in range(member):
-					# point[m] = schedule[m].count(prefer[m])
-				# if point[notyet_m[0]] > point[notyet_m[1]]: 
-					# m_one, m_two = notyet_m[1], notyet_m[0]
-				# elif point[notyet_m[0]] < point[notyet_m[1]]:
-					# m_one, m_two = notyet_m[0], notyet_m[1]
-				# else:
-					# random.shuffle(notyet_m)
-					# m_one, m_two = notyet_m[0], notyet_m[1]
+
 				if schedule[notyet_m[0]].count(prefer1) > schedule[notyet_m[1]].count(prefer1):
 					m_one, m_two = notyet_m[1], notyet_m[0]
 				elif schedule[notyet_m[0]].count(prefer1) < schedule[notyet_m[1]].count(prefer1):
@@ -232,7 +224,8 @@ def replace_by_prefer(schedule, prefer, point):
 					# schedule[m_two][Day] = "A"
 					start = max(find_start(Day, schedule[m_two], 1), find_start(Day, schedule[m_two], "A"),find_start(Day, schedule[m_two], "B"), find_start(Day, schedule[m_two], "C"))
 					replace_work(schedule[m_two], start, Day, "A")
-			not_done = True
+			check_done = True
 			break
 		Day += 1
-		
+	return check_done
+	
