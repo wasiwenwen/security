@@ -16,6 +16,8 @@ member = 4
 # 誰在哪天特休
 WhoChangeWhichDay1 = [[],[],[],[]]
 WhoChangeWhichDay2 = [[],[],[],[]]
+offday_permen = [[],[],[],[]]
+offday_permen2 = [[],[],[],[]]
 # 匯入匯出檔案
 file_in  = 'v_in.csv'
 file_out = 'v_out.csv'
@@ -530,7 +532,7 @@ with open(file_out, 'w', newline='', encoding = 'utf-8') as csvfile:
         s2_out.append(E)
         s2_out.append(PR)
         s2_out.append(S2_list[m][0])
-        s2_out.append(offday_permen[m])
+        s2_out.append(offday_permen2[m])
         s2_out.append(WH)
         s2_out.append(OH)
         writer.writerow(s2_out)
