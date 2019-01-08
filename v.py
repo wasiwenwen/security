@@ -474,11 +474,12 @@ B = 0
 C = 0
 D = 0
 E = 0
+PR = 0
 with open(file_out, 'w', newline='', encoding = 'utf-8') as csvfile:
      # 建立 CSV 檔寫入器
     writer = csv.writer(csvfile)
     # 寫入一列資料
-    writer.writerow(['year', 'month', 'group','name','prefer',1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,'A','B','C','D','E','L','AL','WH','OH'])
+    writer.writerow(['year', 'month', 'group','name','prefer',1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,'A','B','C','D','E','PR','L','AL','WH','OH'])
     # 寫入另外幾列資料
     for m in range(member):
         s1_out = []
@@ -491,6 +492,8 @@ with open(file_out, 'w', newline='', encoding = 'utf-8') as csvfile:
         if 'C' in S1_list[m][2]: C = S1_list[m][2].count('C')
         if 'D' in S1_list[m][2]: D = S1_list[m][2].count('D')
         if 'E' in S1_list[m][2]: E = S1_list[m][2].count('E')
+        if S1_list[m][1][2] == 'A':PR = A+D
+        else:PR = C+E
         WH = (A+B+C)*8 + (D+E)*12
         OH = (D+E)*4
         s1_out.append(A)
@@ -498,11 +501,13 @@ with open(file_out, 'w', newline='', encoding = 'utf-8') as csvfile:
         s1_out.append(C)
         s1_out.append(D)
         s1_out.append(E)
+        s1_out.append(PR)
         s1_out.append(S1_list[m][0])
         s1_out.append(offday_permen[m])
         s1_out.append(WH)
         s1_out.append(OH)
         writer.writerow(s1_out)
+        print(s1_out)
     for m in range(member):
         s2_out = []
         s2_out.append(year)
@@ -514,6 +519,8 @@ with open(file_out, 'w', newline='', encoding = 'utf-8') as csvfile:
         if 'C' in S2_list[m][2]: C = S2_list[m][2].count('C')
         if 'D' in S2_list[m][2]: D = S2_list[m][2].count('D')
         if 'E' in S2_list[m][2]: E = S2_list[m][2].count('E')
+        if S1_list[m][1][2] == 'A':PR = A+D
+        else:PR = C+E
         WH = (A+B+C)*8 + (D+E)*12
         OH = (D+E)*4
         s2_out.append(A)
@@ -521,6 +528,7 @@ with open(file_out, 'w', newline='', encoding = 'utf-8') as csvfile:
         s2_out.append(C)
         s2_out.append(D)
         s2_out.append(E)
+        s2_out.append(PR)
         s2_out.append(S2_list[m][0])
         s2_out.append(offday_permen[m])
         s2_out.append(WH)
