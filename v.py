@@ -4,6 +4,7 @@ import csv
 import datetime
 import calendar
 import random
+from scheduling3 import *
 # 該月有幾天
 day = 0
 # 幾個假日
@@ -17,7 +18,7 @@ member = 4
 WhoChangeWhichDay1 = [[],[],[],[]]
 WhoChangeWhichDay2 = [[],[],[],[]]
 # 匯入匯出檔案
-file_in  = 'v_in.csv'
+file_in  = 'innnn.csv'
 file_out = 'v_out.csv'
 # ==========================================================================================================
 # ------------------------------------------------讀檔案-----------------------------------------------------
@@ -448,9 +449,10 @@ while s2_allleft_peroneday_list.count(0) != 0:
                         else: H_check_list[m][changeDay] = 'F'
         break
 # ==========================================================================================================
+
 # ----------------------------------------------建議班別-----------------------------------------------------
-# S1_list = shift_schedule(S1_list, member)
-# S2_list = shift_schedule(S2_list, member)
+S1_list = shift_schedule(S1_list, member)
+S2_list = shift_schedule(S2_list, member)
 # ==========================================================================================================
 # ---------------------------------轉換成可以理解的班別代號-----------------------------------------------------
 def shiftName(Slist, WhoChangeWhichDay):
@@ -468,6 +470,7 @@ def shiftName(Slist, WhoChangeWhichDay):
 shiftName(S1_list,WhoChangeWhichDay1)
 shiftName(S2_list,WhoChangeWhichDay2)
 # ==========================================================================================================
+
 # ----------------------------------------------寫出檔案-----------------------------------------------------
 with open(file_out, 'w', newline='', encoding = 'utf-8') as csvfile:
      # 建立 CSV 檔寫入器

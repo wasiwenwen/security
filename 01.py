@@ -226,7 +226,7 @@ if s2_allleft_peroneday_list.count(0)>0:
     print(need_your_left2)
 # ==========================================================================================================
 S1_list = shift_schedule(S1_list, member)
-# S2_list = shift_schedule(S2_list, member)
+S2_list = shift_schedule(S2_list, member)
 # ==========================================================================================================
 # 寫出檔案
 with open(file_out, 'w', newline='', encoding = 'utf-8') as csvfile:
