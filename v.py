@@ -397,7 +397,7 @@ while s2_allleft_peroneday_list.count(0) != 0:
         else:
             for m in range(member): H_check_list[m].append('F')
         order += 1
-    offday_permen = [len(WhoChangeWhichDay2[0]),len(WhoChangeWhichDay2[1]),len(WhoChangeWhichDay2[2]),len(WhoChangeWhichDay2[3])]
+    offday_permen2 = [len(WhoChangeWhichDay2[0]),len(WhoChangeWhichDay2[1]),len(WhoChangeWhichDay2[2]),len(WhoChangeWhichDay2[3])]
     for m in range(member):
         sort = nPTm_list[m][3]
         P = H_check_list[sort].count('P')
@@ -407,7 +407,7 @@ while s2_allleft_peroneday_list.count(0) != 0:
     nPTm_list.sort(reverse=True)
     for sort in range(member):
         changeMen = nPTm_list[sort][3]
-        if H_check_list[changeMen].count('P') > 0 and len(WhoChangeWhichDay2[sort]) < min(offday_permen):
+        if H_check_list[changeMen].count('P') > 0 and len(WhoChangeWhichDay2[sort]) < min(offday_permen2):
             changeDay = H_check_list[changeMen].index('P')
             H_check_list[changeMen][changeDay] = 'F'
             S2_list[changeMen][2][changeDay] = 1
@@ -417,7 +417,7 @@ while s2_allleft_peroneday_list.count(0) != 0:
             for m in range(member):
                 if m == changeMen: break
                 else: H_check_list[m][changeDay] = 'F'
-        elif H_check_list[changeMen].count('T') > 0 and H_check_list[changeMen].count('P') == 0 and len(WhoChangeWhichDay2[sort]) < min(offday_permen):
+        elif H_check_list[changeMen].count('T') > 0 and H_check_list[changeMen].count('P') == 0 and len(WhoChangeWhichDay2[sort]) < min(offday_permen2):
             changeDay = H_check_list[changeMen].index('T')
             H_check_list[changeMen][changeDay] = 'F'
             S2_list[changeMen][2][changeDay] = 1
@@ -430,10 +430,10 @@ while s2_allleft_peroneday_list.count(0) != 0:
     if s2_allleft_peroneday_list.count(0) == 0 : 
         break
     if cycle > 5: #讓特休平均分佈
-        while offday_permen[0] != offday_permen[1] and offday_permen[1] != offday_permen[2] and offday_permen[2] != offday_permen[3] or s2_allleft_peroneday_list.count(0) != 0:
+        while offday_permen2[0] != offday_permen2[1] and offday_permen2[1] != offday_permen2[2] and offday_permen2[2] != offday_permen2[3] or s2_allleft_peroneday_list.count(0) != 0:
             for d in range(day):
                 if s2_allleft_peroneday_list[d] == 0:
-                    changeMen = offday_permen.index(min(offday_permen))
+                    changeMen = offday_permen2.index(min(offday_permen2))
                     changeDay = d
                     H_check_list[changeMen][changeDay] = 'F'
                     S2_list[changeMen][2][changeDay] = 1
@@ -443,7 +443,7 @@ while s2_allleft_peroneday_list.count(0) != 0:
                             break
                     s2_allleft_peroneday_list[changeDay] = 1
                     WhoChangeWhichDay2[changeMen].append(changeDay)
-                    offday_permen[changeMen] +=1
+                    offday_permen2[changeMen] +=1
                     for m in range(member):
                         if m == changeMen: break
                         else: H_check_list[m][changeDay] = 'F'
@@ -472,11 +472,17 @@ shiftName(S2_list,WhoChangeWhichDay2)
 # ==========================================================================================================
 
 # ----------------------------------------------寫出檔案-----------------------------------------------------
+A = 0
+B = 0
+C = 0
+D = 0
+E = 0
+PR = 0
 with open(file_out, 'w', newline='', encoding = 'utf-8') as csvfile:
      # 建立 CSV 檔寫入器
     writer = csv.writer(csvfile)
     # 寫入一列資料
-    writer.writerow(['year', 'month', 'group','name','prefer',1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31])
+    writer.writerow(['year', 'month', 'group','name','prefer',1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,'A','B','C','D','E','PR','L','AL','WH','OH'])
     # 寫入另外幾列資料
     for m in range(member):
         s1_out = []
@@ -484,12 +490,51 @@ with open(file_out, 'w', newline='', encoding = 'utf-8') as csvfile:
         s1_out.append(month)
         for i in range(3):s1_out.append(S1_list[m][1][i])
         for i in range(day):s1_out.append(S1_list[m][2][i])
+        if 'A' in S1_list[m][2]: A = S1_list[m][2].count('A')
+        if 'B' in S1_list[m][2]: B = S1_list[m][2].count('B')
+        if 'C' in S1_list[m][2]: C = S1_list[m][2].count('C')
+        if 'D' in S1_list[m][2]: D = S1_list[m][2].count('D')
+        if 'E' in S1_list[m][2]: E = S1_list[m][2].count('E')
+        if S1_list[m][1][2] == 'A':PR = A+D
+        else:PR = C+E
+        WH = (A+B+C)*8 + (D+E)*12
+        OH = (D+E)*4
+        s1_out.append(A)
+        s1_out.append(B)
+        s1_out.append(C)
+        s1_out.append(D)
+        s1_out.append(E)
+        s1_out.append(PR)
+        s1_out.append(S1_list[m][0])
+        s1_out.append(offday_permen[m])
+        s1_out.append(WH)
+        s1_out.append(OH)
         writer.writerow(s1_out)
+        print(s1_out)
     for m in range(member):
         s2_out = []
         s2_out.append(year)
         s2_out.append(month)
         for i in range(3):s2_out.append(S2_list[m][1][i])
         for i in range(day):s2_out.append(S2_list[m][2][i])
+        if 'A' in S2_list[m][2]: A = S2_list[m][2].count('A')
+        if 'B' in S2_list[m][2]: B = S2_list[m][2].count('B')
+        if 'C' in S2_list[m][2]: C = S2_list[m][2].count('C')
+        if 'D' in S2_list[m][2]: D = S2_list[m][2].count('D')
+        if 'E' in S2_list[m][2]: E = S2_list[m][2].count('E')
+        if S1_list[m][1][2] == 'A':PR = A+D
+        else:PR = C+E
+        WH = (A+B+C)*8 + (D+E)*12
+        OH = (D+E)*4
+        s2_out.append(A)
+        s2_out.append(B)
+        s2_out.append(C)
+        s2_out.append(D)
+        s2_out.append(E)
+        s2_out.append(PR)
+        s2_out.append(S2_list[m][0])
+        s2_out.append(offday_permen[m])
+        s2_out.append(WH)
+        s2_out.append(OH)
         writer.writerow(s2_out)
     csvfile.close()
