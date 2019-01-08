@@ -20,8 +20,8 @@ WhoChangeWhichDay2 = [[],[],[],[]]
 offday_permen = [0,0,0,0]
 offday_permen2 = [0,0,0,0]
 # 匯入匯出檔案
-file_in  = 'in(28).csv'
-file_out = 'out(28).csv'
+file_in  = 'in(31).csv'
+file_out = 'out(31).csv'
 # ==========================================================================================================
 # ------------------------------------------------讀檔案-----------------------------------------------------
 def read8(file):
@@ -458,8 +458,8 @@ S2_list = shift_schedule(S2_list, member)
 # ==========================================================================================================
 # ---------------------------------轉換成可以理解的班別代號-----------------------------------------------------
 def shiftName(Slist, WhoChangeWhichDay):
+    Day = 0
     for m1 , m2 , m3 , m4 in zip(Slist[0][2],Slist[1][2],Slist[2][2],Slist[3][2]):
-        Day = 0
         day_schedule = [m1,m2,m3,m4]
         if 'B' not in day_schedule and 'A'in day_schedule and'C' in day_schedule:
             Slist[day_schedule.index('A')][2][Day] = 'D'
