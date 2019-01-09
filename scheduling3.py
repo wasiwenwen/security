@@ -182,7 +182,7 @@ def replace_by_prefer(schedule, prefer, point, check_done):
 						end = min(find_end(Day, schedule[m], 1), find_end(Day, schedule[m], "A"), find_end(Day, schedule[m], "C"),find_end(Day, schedule[m], "B"))
 						replace_work(schedule[m], Day, end, "C")
 			else: #如果兩人喜好重複
-				# 先比目前誰有的比較多
+				# 先比目前誰有的偏好班比較少
 				prefer1 = prefer[notyet_m[0]]
 				if schedule[notyet_m[0]].count(prefer1) > schedule[notyet_m[1]].count(prefer1):
 					m_one, m_two = notyet_m[1], notyet_m[0]
