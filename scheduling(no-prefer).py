@@ -110,6 +110,7 @@ def shift_schedule(S_list, member):
 	
 	# 當還有人沒有被排班
 	not_done = True
+	# for i in range(10):
 	while not_done:
 		not_done = False
 		# 先排三缺一的限定班
@@ -159,7 +160,7 @@ def only_work(schedule):
 					schedule[m][Day] = "C"
 					end = min(find_end(Day, schedule[m], 1), find_end(Day, schedule[m], "A"), find_end(Day, schedule[m], "B"), find_end(Day, schedule[m], "C"))
 					replace_work(schedule[m], Day, end, "C")
-				check_only = True #如果還有三缺一，就要重頭再檢查一次
+				check_only = True #如果有三缺一，就要重頭再檢查一次
 			Day += 1
 			
 
@@ -170,6 +171,7 @@ def replace_by_prefer(schedule, prefer, point, check_done):
 		times = Counter(day_schedule)
 		if times[0] == 2:
 			notyet_m = [p for p, v in enumerate(day_schedule) if v == 0] #找到那天還沒排班的人
+			"""
 			if prefer[notyet_m[0]] != prefer[notyet_m[1]]:# 如果兩個人的喜好不重複
 				for m in notyet_m:
 					replace1 = prefer[m] #第一個人的喜好
@@ -177,39 +179,43 @@ def replace_by_prefer(schedule, prefer, point, check_done):
 						# schedule[m][Day] = replace1
 						start = max(find_start(Day, schedule[m], 1), find_start(Day, schedule[m], "A"),find_start(Day, schedule[m], "B"), find_start(Day, schedule[m], "C"))
 						replace_work(schedule[m], start, Day, "A")
+						# if prefer[m] == "A": point[m] += (len(schedule[m][start: Day]) + 1)
 					elif replace1 == "C":
 						# schedule[m][Day] = "C"
 						end = min(find_end(Day, schedule[m], 1), find_end(Day, schedule[m], "A"), find_end(Day, schedule[m], "C"),find_end(Day, schedule[m], "B"))
 						replace_work(schedule[m], Day, end, "C")
-			else: #如果兩人喜好重複
-				# 先比目前誰有的比較多
-				prefer1 = prefer[notyet_m[0]]
-				if schedule[notyet_m[0]].count(prefer1) > schedule[notyet_m[1]].count(prefer1):
-					m_one, m_two = notyet_m[1], notyet_m[0]
-				elif schedule[notyet_m[0]].count(prefer1) < schedule[notyet_m[1]].count(prefer1):
-					m_one, m_two = notyet_m[0], notyet_m[1]
-				else:
-					random.shuffle(notyet_m)
-					m_one, m_two = notyet_m[0], notyet_m[1]
-				
-				#先排m_one再排m_two
-				replace1 = prefer[m_one] #第一個人的喜好
-				if replace1 == "A": #如果第一個人的喜好是"A"
-					# schedule[m_one][Day] = "A"
-					start = max(find_start(Day, schedule[m_one], 1), find_start(Day, schedule[m_one], "A"), find_start(Day, schedule[m_one], "B"), find_start(Day, schedule[m_one], "C"))
-					replace_work(schedule[m_one], start, Day, "A")
-					replace2 = "C" #第二個人就得填C
-					# schedule[m_two][Day] = replace2
-					end = min(find_end(Day, schedule[m_two], 1), find_end(Day, schedule[m_two], "A"), find_end(Day, schedule[m_two], "B"))
-					replace_work(schedule[m_two], Day, end, "C")
-				elif replace1 == "C": #如果第一個人的喜好是"C"
-					# schedule[m_one][Day] = "C"
-					end = min(find_end(Day, schedule[m_one], 1),find_end(Day, schedule[m_one], "C"), find_end(Day, schedule[m_one], "A"), find_end(Day, schedule[m_one], "B"))
-					replace_work(schedule[m_one], Day, end,"C")
-					replace2 = "A" #第二個人就得填A
-					# schedule[m_two][Day] = "A"
-					start = max(find_start(Day, schedule[m_two], 1), find_start(Day, schedule[m_two], "A"),find_start(Day, schedule[m_two], "B"), find_start(Day, schedule[m_two], "C"))
-					replace_work(schedule[m_two], start, Day, "A")
+						# if prefer[m] == "C": point[m] += (len(schedule[m][Day: end]))
+			"""
+			# else: #如果兩人喜好重複
+				#先比點數
+				# prefer1 = prefer[notyet_m[0]]
+
+				# if schedule[notyet_m[0]].count(prefer1) > schedule[notyet_m[1]].count(prefer1):
+					# m_one, m_two = notyet_m[1], notyet_m[0]
+				# elif schedule[notyet_m[0]].count(prefer1) < schedule[notyet_m[1]].count(prefer1):
+					# m_one, m_two = notyet_m[0], notyet_m[1]
+				# else:
+			prefer1 = random.choice(["A","C"])
+			# random.shuffle(notyet_m)
+			m_one, m_two = notyet_m[0], notyet_m[1]
+			replace1 = prefer1
+			# replace1 = prefer[m_one] #第一個人的喜好
+			if replace1 == "A": #如果第一個人的喜好是"A"
+				# schedule[m_one][Day] = "A"
+				start = max(find_start(Day, schedule[m_one], 1), find_start(Day, schedule[m_one], "A"), find_start(Day, schedule[m_one], "B"), find_start(Day, schedule[m_one], "C"))
+				replace_work(schedule[m_one], start, Day, "A")
+				replace2 = "C" #第二個人就得填C
+				# schedule[m_two][Day] = replace2
+				end = min(find_end(Day, schedule[m_two], 1), find_end(Day, schedule[m_two], "A"), find_end(Day, schedule[m_two], "B"))
+				replace_work(schedule[m_two], Day, end, "C")
+			elif replace1 == "C": #如果第一個人的喜好是"C"
+				# schedule[m_one][Day] = "C"
+				end = min(find_end(Day, schedule[m_one], 1),find_end(Day, schedule[m_one], "C"), find_end(Day, schedule[m_one], "A"), find_end(Day, schedule[m_one], "B"))
+				replace_work(schedule[m_one], Day, end,"C")
+				replace2 = "A" #第二個人就得填A
+				# schedule[m_two][Day] = "A"
+				start = max(find_start(Day, schedule[m_two], 1), find_start(Day, schedule[m_two], "A"),find_start(Day, schedule[m_two], "B"), find_start(Day, schedule[m_two], "C"))
+				replace_work(schedule[m_two], start, Day, "A")
 			check_done = True
 			break
 		Day += 1

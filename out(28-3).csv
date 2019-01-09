@@ -3,7 +3,7 @@ year,month,group,name,prefer,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,
 2019,2,S1,M2,A,B,B,B,B,L,A,D,L,AL,L,L,C,E,L,B,B,E,L,A,A,A,L,E,C,C,C,E,L,-,-,-,4,6,4,1,4,5,1,8,1,172,20
 2019,2,S1,M3,A,A,A,C,L,L,C,E,C,C,C,C,L,L,D,A,L,L,A,AL,L,C,C,L,A,A,A,D,A,-,-,-,8,0,8,2,1,10,1,8,1,164,12
 2019,2,S1,M4,C,C,C,L,C,E,L,L,B,B,B,B,B,L,E,C,C,L,B,B,B,B,B,L,AL,L,B,L,C,-,-,-,0,11,6,0,2,8,0,8,1,160,8
-2019,2,S2,M5,C,L,L,A,C,C,C,C,C,L,L,B,B,B,B,B,B,L,A,A,D,B,L,A,D,B,L,L,A,-,-,-,5,8,5,2,0,5,1,8,0,168,8
-2019,2,S2,M6,A,A,A,L,A,A,A,L,L,A,A,A,C,C,C,L,L,B,B,B,L,L,D,B,E,C,L,B,B,-,-,-,8,6,4,1,1,9,2,8,0,168,8
-2019,2,S2,M7,A,C,C,C,L,B,B,B,B,B,B,L,A,A,L,A,A,A,C,L,L,A,E,C,L,L,D,A,L,-,-,-,7,6,5,1,1,8,2,8,0,168,8
-2019,2,S2,M8,C,B,B,B,B,L,L,A,A,C,C,C,L,L,A,C,C,C,L,C,E,C,L,L,L,A,E,C,C,-,-,-,4,4,10,0,2,12,3,8,0,168,8
+2019,2,S2,M5,C,L,L,A,C,C,C,C,C,L,L,D,B,B,B,B,B,L,C,C,B,L,L,A,A,A,D,L,A,-,-,-,5,6,7,2,0,7,1,8,0,168,8
+2019,2,S2,M6,A,A,A,L,A,A,A,L,L,A,A,E,C,C,C,L,L,B,B,B,L,L,D,B,B,B,L,B,B,-,-,-,7,8,3,1,1,8,1,8,0,168,8
+2019,2,S2,M7,A,C,C,C,L,B,B,B,B,B,B,L,A,A,L,A,A,A,A,L,A,D,E,C,L,L,L,A,L,-,-,-,8,6,4,1,1,9,1,8,0,168,8
+2019,2,S2,M8,C,B,B,B,B,L,L,A,A,C,C,L,L,L,A,C,C,C,L,A,C,E,L,L,C,C,E,C,C,-,-,-,4,4,10,0,2,12,3,8,0,168,8
